@@ -1,19 +1,23 @@
-import React from "react";
-
-const API = `https://65a25d5342ecd7d7f0a771bd.mockapi.io/users`;
+import { useState, useEffect } from "react";
 
 const UserList = () => {
-  const [users, setUsers] = React.useState([]);
+  const [users, setUsers] = useState([]);
+  const [userSearchName, setUserSearchName] = useState("");
+  const [gender, setGender] = useState("All");
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchAPI = async () => {
-      const data = await fetch(API).then((res) => res.json());
+      const url =
+        gender === "All"
+          ? "https://65a25d5342ecd7d7f0a771bd.mockapi.io/users"
+          : `https://65a25d5342ecd7d7f0a771bd.mockapi.io/users?gender=${gender}`;
+      const data = await fetch(url, {
+        method: "GET",
+      }).then((res) => res.json());
       setUsers(data);
     };
     fetchAPI();
-  }, []);
-
-  console.log(users);
+  }, [gender]);
 
   return (
     <div className="flex justify-center">
@@ -24,8 +28,12 @@ const UserList = () => {
             type="text"
             placeholder="Search by name..."
             className="border rounded-lg p-2 w-1/2"
+            onChange={(event) => setUserSearchName(event.target.value)}
           />
-          <select className="border rounded-lg p-2">
+          <select
+            className="border rounded-lg p-2"
+            onChange={(event) => setGender(event.target.value)}
+          >
             <option value="All">All Genders</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
