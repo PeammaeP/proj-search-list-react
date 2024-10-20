@@ -1,34 +1,19 @@
+import React from "react";
+
+const API = `https://65a25d5342ecd7d7f0a771bd.mockapi.io/users`;
+
 const UserList = () => {
-  const users = [
-    {
-      id: 1,
-      fullName: 'Test',
-      imageUrl: 'https://via.placeholder.com/40',
-      gender: 'Male',
-      interests: ['coding', 'music'],
-    },
-    {
-      id: 2,
-      fullName: 'Mike',
-      imageUrl: 'https://via.placeholder.com/40',
-      gender: 'Female',
-      interests: ['coding'],
-    },
-    {
-      id: 3,
-      fullName: 'Test',
-      imageUrl: 'https://via.placeholder.com/40',
-      gender: 'Male',
-      interests: ['coding'],
-    },
-    {
-      id: 4,
-      fullName: 'Test Mike',
-      imageUrl: 'https://via.placeholder.com/40',
-      gender: 'Male',
-      interests: [],
-    },
-  ]
+  const [users, setUsers] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchAPI = async () => {
+      const data = await fetch(API).then((res) => res.json());
+      setUsers(data);
+    };
+    fetchAPI();
+  }, []);
+
+  console.log(users);
 
   return (
     <div className="flex justify-center">
@@ -70,7 +55,7 @@ const UserList = () => {
                 </td>
                 <td className="py-2 px-4 border-b">{user.gender}</td>
                 <td className="py-2 px-4 border-b">
-                  {user.interests.join(', ') || 'N/A'}
+                  {user.interests.join(", ") || "N/A"}
                 </td>
               </tr>
             ))}
@@ -78,7 +63,7 @@ const UserList = () => {
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UserList
+export default UserList;
